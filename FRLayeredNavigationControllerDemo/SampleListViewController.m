@@ -110,9 +110,9 @@
     } else if (n == 6) {
         return @"low mem testing: push on UINavigationController";
     } else if (n == 7) {
-        return @"foo";
+        return @"open VC";
     } else if (n == 8) {
-        return @"bar";
+        return @"close VC";
     } else if (n == 9) {
         return @"buz";
     } else {
@@ -236,6 +236,10 @@
         UIViewController *vc = [[SampleListViewController alloc] init];
         FRLayeredNavigationController *fvc = [[FRLayeredNavigationController alloc] initWithRootViewController:vc];
         [self.navigationController pushViewController:fvc animated:YES];
+    } else if (indexPath.row == 7) {
+        [self.layeredNavigationController expandViewControllersAnimated:YES];
+    } else if (indexPath.row == 8) {
+        [self.layeredNavigationController compressViewControllers:YES];
     } else {
         /* list */
         svc = [[SampleListViewController alloc] init];
