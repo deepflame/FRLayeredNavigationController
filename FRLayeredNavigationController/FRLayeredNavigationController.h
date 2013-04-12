@@ -176,6 +176,8 @@
  */
 - (void)compressViewControllers:(BOOL)animated;
 
+- (void)expandViewControllersAnimated:(BOOL)animated;
+
 /**
  * If user interaction on the layered navigation controller is enabled.
  */

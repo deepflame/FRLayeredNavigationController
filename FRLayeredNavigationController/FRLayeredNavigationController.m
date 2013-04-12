@@ -351,7 +351,7 @@ typedef enum {
                                  last.layeredNavigationItem.snappingDistance :
                                  CGRectGetWidth(last.view.frame));
 
-        if (xTranslation == 0 && (CGFloatNotEqual(curDiff, initDiff) && CGFloatNotEqual(curDiff, maxDiff))) {
+        if (xTranslation == 0) {
             switch (method) {
                 case SnappingPointsMethodNearest: {
                     if ((curDiff - initDiff) > (maxDiff - curDiff)) {
@@ -833,19 +833,23 @@ typedef enum {
 - (void)compressViewControllers:(BOOL)animated;
 {
     void (^compact)(void) = ^{
-        FRLayeredNavigationItem* parentItem = nil;
-        for (FRLayerController* layerController in self.layeredViewControllers) {
-            FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
-            if (parentItem != nil) {
-                CGRect f = layerController.view.frame;
-                f.origin.x = parentItem.currentViewPosition.x + parentItem.nextItemDistance;
-                navigationItem.currentViewPosition = f.origin;
-                layerController.view.frame = f;
-            }
-            parentItem = navigationItem;
-        }
+        [self viewControllersToSnappingPointsMethod:SnappingPointsMethodCompact];
     };
 
+    if (animated) {
+        [UIView animateWithDuration:0.5 animations:compact];
+    }
+    else {
+        compact();
+    }
+}
+
+- (void)expandViewControllersAnimated:(BOOL)animated
+{
+    void (^compact)(void) = ^{
+        [self viewControllersToSnappingPointsMethod:SnappingPointsMethodExpand];
+    };
+    
     if (animated) {
         [UIView animateWithDuration:0.5 animations:compact];
     }
